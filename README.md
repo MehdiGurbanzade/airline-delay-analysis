@@ -2,16 +2,23 @@
 
 Which groups of U.S. airline–airport operations share the same delay behaviour, and which delay cause dominates each group? This project clusters monthly delay records with PCA, feature selection, k-Means++ and OPTICS to find patterns that airlines could act on.
 
+<p align="center"><img src="images/correlation_delay_causes.png" width="650" alt="Correlation between delay causes"></p>
+
 ## Highlights
 
 - **Data**: 89,077 monthly records (carrier x airport x month, 2015–2019) with 21 features: flight counts, delay counts and delay minutes by cause (carrier, weather, NAS, security, late aircraft)
 - **Preprocessing**: missing values filled with 0, 99 rows with zero flights removed (**88,978 rows**), two engineered features (`delay_rate`, `total_delay_hours`)
-- **EDA**: carrier and late-aircraft delays move together and dominate total delay minutes. A combined ranking puts C5, B6, AX, F9 and NK as the five worst-performing carriers.
+- **EDA**: carrier and late-aircraft delay minutes are strongly correlated (r = 0.92) and dominate total delay minutes, while security delays are only weakly related to the other causes. A combined ranking puts C5, B6, AX, F9 and NK as the five worst-performing carriers.
 - **Three dataset versions**: full scaled data, **PCA** (3 components, about 74% of variance; PC1 alone 59%) and **VarianceThreshold** (2 low-variance features removed)
 - **Clustering**: k-Means++ silhouette scores as a reference, then **OPTICS** with distance cuts chosen from the reachability plots for each version
 - **Main finding**: in the selected PCA clustering, **late-aircraft delay is the dominant cause in 9 of 13 clusters**, NAS delay in 3 and carrier delay in 1
 
 ## Results
+
+<p align="center">
+  <img src="images/pca_explained_variance.png" width="49%" alt="PCA cumulative explained variance">
+  <img src="images/reachability_pca.png" width="49%" alt="OPTICS reachability plot of the PCA data">
+</p>
 
 k-Means++ (best k per dataset version, silhouette score):
 
@@ -48,6 +55,7 @@ Recommended actions derived from the clusters: reduce late-aircraft propagation 
 | `final.ipynb` | Full analysis: data description, IDA, preprocessing, EDA, PCA, feature selection, k-Means++, OPTICS, comparison, conclusions |
 | `Airline_Delay_Cause.csv` | Raw dataset (about 14 MB) |
 | `requirements.txt` | Python dependencies |
+| `images/` | Charts and screenshots used in this README |
 
 ## Data source
 
